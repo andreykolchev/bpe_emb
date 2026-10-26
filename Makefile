@@ -40,7 +40,17 @@ test: bin/test_process bin/test_engine
 run: bin/bpe
 	./bin/bpe
 
+# Sources owned by the project; third_party/ is excluded on purpose.
+FORMAT_SRCS := $(wildcard src/*.h src/*.cpp tests/*.cpp examples/coordinator/*.h examples/coordinator/*.cpp)
+CLANG_FORMAT ?= clang-format
+
+format:
+	$(CLANG_FORMAT) -i $(FORMAT_SRCS)
+
+format-check:
+	$(CLANG_FORMAT) --dry-run --Werror $(FORMAT_SRCS)
+
 clean:
 	rm -rf bin
 
-.PHONY: run test debug debug-test clean
+.PHONY: run test debug debug-test format format-check clean
