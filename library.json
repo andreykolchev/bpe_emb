@@ -1,0 +1,10 @@
+{
+  "name": "bpe",
+  "version": "0.1.0",
+  "description": "Tiny JSON-driven business-process engine for embedded devices",
+  "keywords": "bpm, workflow, state machine, embedded, esp32",
+  "frameworks": "*",
+  "platforms": "*",
+  "dependencies": [{ "name": "ArduinoJson", "version": "^7.0.0" }],
+  "build": { "srcDir": "src" }
+}
