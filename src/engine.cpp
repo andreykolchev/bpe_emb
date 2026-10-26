@@ -173,6 +173,7 @@ namespace core
             }
             if (node.type == NodeType::ExternalTask)
             {
+                taskDispatcher_.cancelTask(activeNodeTaskId_);
                 fail("timeout");
             }
             else
