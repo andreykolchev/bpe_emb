@@ -18,6 +18,10 @@ bin/bpe-debug: examples/coordinator $(DEPS)
 
 debug: bin/bpe-debug
 
+# Default target for IDEs (CLion runs `make all`): builds every binary with symbols so
+# compile flags are picked up for code insight and the executables can be debugged.
+all: bin/bpe-debug bin/test_process-debug bin/test_engine-debug
+
 bin/test_process: tests/test_process.cpp $(DEPS)
 	@mkdir -p bin
 	$(CXX) $(CPPFLAGS) $(INCLUDES) $(CXXFLAGS) tests/test_process.cpp $(LIB_SRCS) -o $@
@@ -27,11 +31,16 @@ bin/test_process-debug: tests/test_process.cpp $(DEPS)
 	@mkdir -p bin
 	$(CXX) $(CPPFLAGS) $(INCLUDES) -std=c++17 -Wall -Wextra -g -O0 tests/test_process.cpp $(LIB_SRCS) -o $@
 
-debug-test: bin/test_process-debug
+debug-test: bin/test_process-debug bin/test_engine-debug
 
 bin/test_engine: tests/test_engine.cpp $(DEPS)
 	@mkdir -p bin
 	$(CXX) $(CPPFLAGS) $(INCLUDES) $(CXXFLAGS) tests/test_engine.cpp $(LIB_SRCS) -o $@
+
+# Unoptimized test build with symbols for gdb / :Termdebug.
+bin/test_engine-debug: tests/test_engine.cpp $(DEPS)
+	@mkdir -p bin
+	$(CXX) $(CPPFLAGS) $(INCLUDES) -std=c++17 -Wall -Wextra -g -O0 tests/test_engine.cpp $(LIB_SRCS) -o $@
 
 test: bin/test_process bin/test_engine
 	./bin/test_process
@@ -53,4 +62,4 @@ format-check:
 clean:
 	rm -rf bin
 
-.PHONY: run test debug debug-test format format-check clean
+.PHONY: all run test debug debug-test format format-check clean
